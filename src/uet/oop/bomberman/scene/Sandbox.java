@@ -7,20 +7,18 @@ import javafx.scene.canvas.GraphicsContext;
 
 import uet.oop.bomberman.GameLoop;
 import uet.oop.bomberman.constants.GlobalConstants;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.gamecontroller.EventHandler;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class Sandbox {
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
 
     static Canvas canvas;
     static Group root;
@@ -32,8 +30,8 @@ public class Sandbox {
     }
     static Bomber bomber;
 
-    private static List<Entity> entities = new ArrayList<>();
-    private static List<Entity> stillObjects = new ArrayList<>();
+    private static final List<Entity> entities = new ArrayList<>();
+    private static final List<Entity> stillObjects = new ArrayList<>();
 
     public static void setupScene(){
         if(!sceneStarted){
@@ -44,30 +42,72 @@ public class Sandbox {
 
     private static void init() {
         root = new Group();
-        scene = new Scene(root, GlobalConstants.SCENE_WIDTH, GlobalConstants.SCENE_HEIGHT);
-        canvas = new Canvas(GlobalConstants.CANVAS_WIDTH, GlobalConstants.CANVAS_HEIGHT);
+        scene = new Scene(root);
+        canvas = new Canvas();
         root.getChildren().add(canvas);
         gc = canvas.getGraphicsContext2D();
         GameLoop.start(gc);
-        createMap();
-        bomber = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomber);
-        EventHandler.catchEvent(scene);
+        try {
+            createMap(new File("D:\\Game\\bomberman-starter\\res\\levels\\Level1.txt"));
+        } catch (IOException e) {
+            System.err.println("Unable to load map file");
+            System.exit(1);
+        }
+
+        // The event capture task was created at the end, when the objects were completely initialized.
+        EventHandler.catchInputEvents(scene);
     }
 
-    private static void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                }
-                else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
+    private static void createMap(File file) throws IOException {
+        Scanner sc = new Scanner(file);
+        String str = sc.nextLine();
+        String[] numeral = str.split("\\s+");
+        int level = Integer.parseInt(numeral[0]);
+        int row = Integer.parseInt(numeral[1]);
+        int col = Integer.parseInt(numeral[2]);
+
+        // setup Canvas depending on the map.
+        GlobalConstants.CANVAS_HEIGHT = row * 32;
+        GlobalConstants.CANVAS_WIDTH = col * 32;
+        canvas.setWidth(GlobalConstants.CANVAS_WIDTH);
+        canvas.setHeight(GlobalConstants.CANVAS_HEIGHT);
+
+        for (int i = 0; i < row; i++) {
+            String s = sc.nextLine();
+            System.out.println(s);
+            for (int j = 0; j < col; j++) {
+                Entity object = new Grass(j, i, Sprite.grass.getFxImage());
+                switch (s.charAt(j)) {
+                    case '#':
+                        object = new Wall(j, i, Sprite.wall.getFxImage());
+                        break;
+                    case '*':
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
+                        break;
+                    case 'p':
+                        setBomber(j, i);
+                        break;
+                    case '1':
+                        object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                        break;
+                    case '2':
+                        object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
+                        break;
+                    default:
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        break;
+
                 }
                 stillObjects.add(object);
             }
         }
+        sc.close();
+
+    }
+
+    private static void setBomber(int x, int y) {
+        bomber = new Bomber(x, y, Sprite.player_down.getFxImage());
+        entities.add(bomber);
     }
 
 
@@ -97,9 +137,5 @@ public class Sandbox {
 
     public static Bomber getBomber() {
         return bomber;
-    }
-
-    public static void setBomber(Bomber newBomber) {
-        bomber = newBomber;
     }
 }

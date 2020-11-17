@@ -2,42 +2,22 @@ package uet.oop.bomberman.gamecontroller;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import uet.oop.bomberman.scene.Sandbox;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class EventHandler {
-    protected static HashSet<String> inputEventList = new HashSet<>();
+    protected static ArrayList<String> inputEventList = new ArrayList<>();
 
-    public static void catchEvent(Scene s) {
-        //KeyPressHandler kph = new KeyPressHandler();
-        //KeyReleaseHandler krh = new KeyReleaseHandler();
-        s.setOnKeyPressed(new KeyPressHandler());
-        s.setOnKeyReleased(new KeyReleaseHandler());
+    public static void catchInputEvents(Scene s) {
+        s.setOnKeyReleased(event -> EventHandler.inputEventList.remove(event.getCode().toString()));
+        s.setOnKeyPressed(event -> {
+            if (!EventHandler.inputEventList.contains(event.getCode().toString())) {
+                EventHandler.inputEventList.add(event.getCode().toString());
+            }
+        });
     }
 
-    public static boolean isKeyDown(KeyCode k) {
-        return inputEventList.contains(k.toString());
-    }
-
-    public static HashSet<String> getInputEventList() {
+    public static ArrayList<String> getInputEventList() {
         return inputEventList;
-    }
-}
-
-class KeyPressHandler implements javafx.event.EventHandler<KeyEvent> {
-
-    @Override
-    public void handle(KeyEvent event) {
-        EventHandler.inputEventList.add(event.getCode().toString());
-    }
-}
-
-class KeyReleaseHandler implements javafx.event.EventHandler<KeyEvent> {
-
-    @Override
-    public  void handle(KeyEvent event) {
-        EventHandler.inputEventList.remove(event.getCode().toString());
     }
 }
