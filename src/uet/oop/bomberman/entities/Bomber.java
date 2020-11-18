@@ -1,8 +1,10 @@
 package uet.oop.bomberman.entities;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.scene.Sandbox;
 
 public class Bomber extends Entity {
     Direction currentDirection = Direction.DOWN;
@@ -23,8 +25,35 @@ public class Bomber extends Entity {
         } else {
             this.x += deltaX;
             this.y += deltaY;
+            if (!canMove()) {
+                this.x -= deltaX;
+                this.y -= deltaY;
+                return;
+            }
             animationsOnSameDirection(direction);
         }
+    }
+
+    private boolean canMove() {
+        for (Entity e : Sandbox.getStillObjects()) {
+            if (e instanceof Grass) continue;
+            if (intersects(e)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public Rectangle2D getBoundary() {
+
+        // To make it feel like the bomber moves easily,
+        // the rectangle around the bomber slightly smaller than the bomber
+        return new Rectangle2D(x + 3 , y + 3, 18, 26);
+    }
+
+    private boolean intersects(Entity that) {
+        return this.getBoundary().intersects(that.getBoundary());
     }
 
     protected void animationsOnSameDirection(Direction direction) {
@@ -109,9 +138,5 @@ public class Bomber extends Entity {
                 }
                 break;
         }
-    }
-
-    public boolean checkCollisions(int positionX, int positionY) {
-        return false;
     }
 }

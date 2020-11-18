@@ -1,7 +1,6 @@
 package uet.oop.bomberman.gamecontroller;
 
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 

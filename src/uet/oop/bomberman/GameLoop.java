@@ -19,7 +19,7 @@ public class GameLoop {
                 now = (now - startNanoTime) / 1000000000;
                 deltaTime = now - oldGameTime;
                 updateGame();
-                renderGame(Sandbox.getGc());
+                renderGame(gc);
             }
         }.start();
     }
