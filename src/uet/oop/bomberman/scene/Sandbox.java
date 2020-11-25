@@ -29,6 +29,7 @@ public class Sandbox {
         sceneStarted = false;
     }
     static Bomber bomber;
+    static Balloon balloon;
 
     private static final List<Entity> entities = new ArrayList<>();
     private static final List<Entity> stillObjects = new ArrayList<>();
@@ -48,7 +49,7 @@ public class Sandbox {
         gc = canvas.getGraphicsContext2D();
         GameLoop.start(gc);
         try {
-            createMap(new File("D:\\Game\\bomberman-starter\\res\\levels\\Level1.txt"));
+            createMap(new File("C:\\Users\\hp\\IdeaProjects\\A_Project\\Bomberman\\res\\levels\\Level1.txt"));
         } catch (IOException e) {
             System.err.println("Unable to load map file");
             System.exit(1);
@@ -88,7 +89,7 @@ public class Sandbox {
                         setBomber(j, i);
                         break;
                     case '1':
-                        object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                        setBalloon(j, i);
                         break;
                     case '2':
                         object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
@@ -110,6 +111,10 @@ public class Sandbox {
         entities.add(bomber);
     }
 
+    private static void setBalloon(int x, int y) {
+        balloon = new Balloon(x, y, Sprite.balloom_left1.getFxImage());
+        entities.add(balloon);
+    }
 
     public static List<Entity> getEntities() {
         return entities;
@@ -137,5 +142,9 @@ public class Sandbox {
 
     public static Bomber getBomber() {
         return bomber;
+    }
+
+    public static Balloon getBalloon() {
+        return balloon;
     }
 }

@@ -2,6 +2,7 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.scene.Sandbox;
 import uet.oop.bomberman.gamecontroller.EventHandlersManager;
 
@@ -39,8 +40,10 @@ public class GameLoop {
     public static void updateGame() {
         // Trước khi update thì bắt sự kiện, cài đặt update
         EventHandlersManager.handleBomberMovements();
+        //EnemyMove.EnemyMove();
 
         //Đang duyệt trống, hàm k làm gì.
-        //Sandbox.getEntities().forEach(Entity::update);
+        Sandbox.getEntities().forEach(Entity::update);
+        Sandbox.getStillObjects().forEach(Entity::update);
     }
 }

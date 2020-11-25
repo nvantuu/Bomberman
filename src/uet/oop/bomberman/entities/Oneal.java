@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.constants.GlobalConstants;
 
 public class Oneal extends Entity {
     public Oneal(int x, int y, Image img) {

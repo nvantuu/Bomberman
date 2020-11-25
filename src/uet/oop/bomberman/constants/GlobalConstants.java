@@ -7,4 +7,5 @@ public class GlobalConstants {
     public static String GAME_NAME = "Bomberman";
     public static String GAME_VERSION = " --v1.0";
     public static int SPEED_BOMBER = 2;
+    public static int SPEED_BALLOON = 1;
 }
