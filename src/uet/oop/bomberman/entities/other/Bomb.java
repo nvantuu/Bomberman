@@ -1,16 +1,18 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.other;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 
-public class Balloon extends Entity {
-    public Balloon(int x, int y, Image img) {
+import uet.oop.bomberman.entities.Entity;
+
+public class Bomb extends Entity {
+    public Bomb(int x, int y, Image img) {
         super(x, y, img);
     }
 
     @Override
     public Rectangle2D getBoundary() {
-        return new Rectangle2D(x, y,32, 32);
+        return null;
     }
 
     @Override

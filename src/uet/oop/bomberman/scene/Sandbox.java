@@ -8,6 +8,12 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.GameLoop;
 import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.character.enemies.Balloon;
+import uet.oop.bomberman.entities.character.enemies.Oneal;
+import uet.oop.bomberman.entities.other.Brick;
+import uet.oop.bomberman.entities.other.Grass;
+import uet.oop.bomberman.entities.other.Wall;
+import uet.oop.bomberman.entities.character.player.Bomber;
 import uet.oop.bomberman.gamecontroller.EventHandler;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -74,31 +80,47 @@ public class Sandbox {
 
         for (int i = 0; i < row; i++) {
             String s = sc.nextLine();
-            System.out.println(s);
             for (int j = 0; j < col; j++) {
-                Entity object = new Grass(j, i, Sprite.grass.getFxImage());
+                Entity object;
                 switch (s.charAt(j)) {
                     case '#':
                         object = new Wall(j, i, Sprite.wall.getFxImage());
+                        stillObjects.add(object);
                         break;
-                    case '*':
+
+                    case '*':  // Brick
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Brick(j, i, Sprite.brick.getFxImage());
+                        stillObjects.add(object);
                         break;
+
                     case 'p':
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         setBomber(j, i);
                         break;
-                    case '1':
+
+                    case '1': // Balloon
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                        entities.add(object);
                         break;
-                    case '2':
+
+                    case '2': // Oneal
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
+                        entities.add(object);
                         break;
+
                     default:
                         object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         break;
 
                 }
-                stillObjects.add(object);
             }
         }
         sc.close();
@@ -107,6 +129,7 @@ public class Sandbox {
 
     private static void setBomber(int x, int y) {
         bomber = new Bomber(x, y, Sprite.player_down.getFxImage());
+        bomber.setBomberSpeed(GlobalConstants.SPEED_BOMBER);
         entities.add(bomber);
     }
 
