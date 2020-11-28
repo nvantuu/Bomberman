@@ -54,7 +54,7 @@ public class Sandbox {
         gc = canvas.getGraphicsContext2D();
         GameLoop.start(gc);
         try {
-            createMap(new File("D:\\Game\\bomberman-starter\\res\\levels\\Level1.txt"));
+            createMap(new File("C:\\Users\\hp\\IdeaProjects\\bomberman-starter\\res\\levels\\Level1.txt"));
         } catch (IOException e) {
             System.err.println("Unable to load map file");
             System.exit(1);

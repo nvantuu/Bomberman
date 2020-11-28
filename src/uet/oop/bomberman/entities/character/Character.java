@@ -8,7 +8,7 @@ public abstract class Character extends Entity {
 
     protected int speed;
 
-    protected Direction currentDirection;
+    protected  Direction currentDirection = Direction.LEFT;
 
     protected boolean alive = true;
 

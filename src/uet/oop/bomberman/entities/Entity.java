@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
@@ -30,4 +31,20 @@ public abstract class Entity {
     }
 
     public abstract void update();
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getXTile(){
+        return GlobalConstants.pixelToTile(x + Sprite.DEFAULT_SIZE / 2);
+    }
+
+    public int getYTile(){
+        return GlobalConstants.pixelToTile(y - Sprite.DEFAULT_SIZE / 2);
+    }
 }
