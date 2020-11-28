@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities.other;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.constants.GlobalConstants;
 
 import uet.oop.bomberman.entities.Entity;
 
