@@ -11,7 +11,7 @@ import uet.oop.bomberman.scene.Sandbox;
 
 import java.util.Random;
 
-public class Balloon extends Character {
+public class Balloon extends Enemy {
 
     public Balloon(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);

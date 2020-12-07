@@ -3,7 +3,12 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.other.Bomb;
+import uet.oop.bomberman.gamecontroller.EventHandlersManager;
+import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scene.Sandbox;
+
+import java.util.Iterator;
 
 public class GameLoop {
     static double oldGameTime;
@@ -37,6 +42,9 @@ public class GameLoop {
      * Hàm cập nhật lại các đối tượng.
      */
     public static void updateGame() {
+        //Sandbox.getStillObjects().forEach(Entity::update);
+        EventHandlersManager.handleBomberEvents();
         Sandbox.getEntities().forEach(Entity::update);
+        Sandbox.getStillObjects().forEach(Entity::update);
     }
 }

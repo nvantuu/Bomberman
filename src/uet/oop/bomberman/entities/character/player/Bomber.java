@@ -1,18 +1,34 @@
 package uet.oop.bomberman.entities.character.player;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.character.Character;
 import uet.oop.bomberman.entities.character.enemies.Enemy;
+import uet.oop.bomberman.entities.other.Bomb;
+import uet.oop.bomberman.entities.other.Flame;
 import uet.oop.bomberman.entities.other.Grass;
 import uet.oop.bomberman.gamecontroller.EventHandlersManager;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scene.Sandbox;
 import uet.oop.bomberman.entities.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Bomber extends Character {
     private int countImage = 0;
+
+    private List<Bomb> bombList = new ArrayList<Bomb>();
+    private List<Flame> flameList = new ArrayList<Flame>();
+
+    public void setBomb() {
+        bombList.add(new Bomb(Math.round((float) x/32),
+                Math.round((float) y/32), Sprite.bomb.getFxImage()));
+        flameList.add(new Flame(Math.round((float) x/32),
+                Math.round((float) y/32), Sprite.bomb_exploded.getFxImage()));
+    }
 
     public void setBomberSpeed(int speed) {
         this.speed = speed;
@@ -24,7 +40,34 @@ public class Bomber extends Character {
 
     @Override
     public void update() {
-        move();
+        // update list bomb
+        for (int i = 0; i < bombList.size(); i++) {
+            if (bombList.get(i).countImageBomb == 200) {
+                bombList.remove(i);
+            } else {
+                bombList.get(i).update();
+            }
+        }
+
+        // update list flame
+        for (int i = 0; i < flameList.size(); i++) {
+            if (flameList.get(i).countImageFlame == 220) {
+                flameList.remove(i);
+            } else {
+                flameList.get(i).update();
+            }
+        }
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {
+        for (Bomb b : bombList) {
+            b.render(gc);
+        }
+        for (Flame f : flameList) {
+            f.render(gc);
+        }
+        gc.drawImage(img, x, y);
     }
 
     @Override
@@ -155,6 +198,18 @@ public class Bomber extends Character {
                 }
                 break;
         }
+    }
+
+    public Entity createBomb() {
+        return new Bomb(x, y, Sprite.bomb_2.getFxImage());
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
 }

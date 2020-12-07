@@ -10,6 +10,7 @@ import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.character.enemies.Balloon;
 import uet.oop.bomberman.entities.character.enemies.Oneal;
+import uet.oop.bomberman.entities.other.Bomb;
 import uet.oop.bomberman.entities.other.Brick;
 import uet.oop.bomberman.entities.other.Grass;
 import uet.oop.bomberman.entities.other.Wall;
@@ -87,7 +88,10 @@ public class Sandbox {
                         object = new Wall(j, i, Sprite.wall.getFxImage());
                         stillObjects.add(object);
                         break;
-
+                    case '~':
+                        object = new Bomb(j, i, Sprite.bomb.getFxImage());
+                        stillObjects.add(object);
+                        break;
                     case '*':  // Brick
                         object = new Grass(j, i, Sprite.grass.getFxImage());
                         stillObjects.add(object);
@@ -124,7 +128,6 @@ public class Sandbox {
             }
         }
         sc.close();
-
     }
 
     private static void setBomber(int x, int y) {
