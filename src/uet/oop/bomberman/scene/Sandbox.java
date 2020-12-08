@@ -8,6 +8,13 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.GameLoop;
 import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.character.enemies.Balloon;
+import uet.oop.bomberman.entities.character.enemies.Oneal;
+import uet.oop.bomberman.entities.other.Brick;
+import uet.oop.bomberman.entities.other.Grass;
+import uet.oop.bomberman.entities.other.Wall;
+import uet.oop.bomberman.entities.character.player.Bomber;
+import uet.oop.bomberman.entities.other.bomb.Bomb;
 import uet.oop.bomberman.gamecontroller.EventHandler;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -32,6 +39,7 @@ public class Sandbox {
 
     private static final List<Entity> entities = new ArrayList<>();
     private static final List<Entity> stillObjects = new ArrayList<>();
+    private static List<Bomb> bombs = new ArrayList<>();
 
     public static void setupScene(){
         if(!sceneStarted){
@@ -48,7 +56,7 @@ public class Sandbox {
         gc = canvas.getGraphicsContext2D();
         GameLoop.start(gc);
         try {
-            createMap(new File("D:\\Game\\bomberman-starter\\res\\levels\\Level1.txt"));
+            createMap(new File("C:\\Users\\hp\\IdeaProjects\\A_Project\\Bomberman\\res\\levels\\Level1.txt"));
         } catch (IOException e) {
             System.err.println("Unable to load map file");
             System.exit(1);
@@ -74,31 +82,47 @@ public class Sandbox {
 
         for (int i = 0; i < row; i++) {
             String s = sc.nextLine();
-            System.out.println(s);
             for (int j = 0; j < col; j++) {
-                Entity object = new Grass(j, i, Sprite.grass.getFxImage());
+                Entity object;
                 switch (s.charAt(j)) {
                     case '#':
                         object = new Wall(j, i, Sprite.wall.getFxImage());
+                        stillObjects.add(object);
                         break;
-                    case '*':
+
+                    case '*':  // Brick
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Brick(j, i, Sprite.brick.getFxImage());
+                        stillObjects.add(object);
                         break;
+
                     case 'p':
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         setBomber(j, i);
                         break;
-                    case '1':
+
+                    case '1': // Balloon
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Balloon(j, i, Sprite.balloom_left1.getFxImage());
+                        entities.add(object);
                         break;
-                    case '2':
+
+                    case '2': // Oneal
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
+                        entities.add(object);
                         break;
+
                     default:
                         object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         break;
 
                 }
-                stillObjects.add(object);
             }
         }
         sc.close();
@@ -107,6 +131,7 @@ public class Sandbox {
 
     private static void setBomber(int x, int y) {
         bomber = new Bomber(x, y, Sprite.player_down.getFxImage());
+        bomber.setBomberSpeed(GlobalConstants.SPEED_BOMBER);
         entities.add(bomber);
     }
 
@@ -115,8 +140,55 @@ public class Sandbox {
         return entities;
     }
 
+    public static void addEntities (Entity e){
+        entities.add(e);
+    }
+
+    public static Entity getEntityAt (int x, int y){
+        for (Entity obj : entities){
+            if (x == obj.getX() && y == obj.getY()){
+                return obj;
+            }
+        }
+
+        return null;
+    }
+
     public static List<Entity> getStillObjects() {
         return stillObjects;
+    }
+
+    public static void addStillObjects (Entity e){
+        stillObjects.add(e);
+    }
+
+    public static Entity getStillObjectsAt (int x, int y){
+        for (Entity obj : stillObjects){
+            if (x == obj.getX() && y == obj.getY()){
+                return obj;
+            }
+        }
+
+        return null;
+    }
+
+    public static List<Bomb> getBombs() {
+        return bombs;
+    }
+
+    /**
+     * đặt bom tại vị trí chỉ định
+     * @param x
+     * @param y
+     * @return
+     */
+    public static Bomb getBombsAt(int x, int y) {
+        for (Bomb obj : bombs){
+            if (x == obj.getX() && y == obj.getY()){
+                return obj;
+            }
+        }
+        return null;
     }
 
     public static Canvas getCanvas() {

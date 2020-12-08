@@ -28,7 +28,7 @@ public class EventHandlersManager {
         }
 
         if (keyBoardInputs.contains("SPACE")) {
-
+            Sandbox.getBomber().detectPlaceBomb();
         }
 
         if (!keyBoardInputs.contains("LEFT") &&

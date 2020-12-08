@@ -2,6 +2,8 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.other.bomb.Flame;
 import uet.oop.bomberman.scene.Sandbox;
 import uet.oop.bomberman.gamecontroller.EventHandlersManager;
 
@@ -31,16 +33,17 @@ public class GameLoop {
         gc.clearRect(0, 0, Sandbox.getCanvas().getWidth(), Sandbox.getCanvas().getHeight());
         Sandbox.getStillObjects().forEach(g -> g.render(gc));
         Sandbox.getEntities().forEach(g -> g.render(gc));
+        /*for (int i = 0; i < Flame._flame.length; i++){
+            Flame._flame[i].render(gc);
+        }
+
+         */
     }
 
     /**
      * Hàm cập nhật lại các đối tượng.
      */
     public static void updateGame() {
-        // Trước khi update thì bắt sự kiện, cài đặt update
-        EventHandlersManager.handleBomberMovements();
-
-        //Đang duyệt trống, hàm k làm gì.
-        //Sandbox.getEntities().forEach(Entity::update);
+        Sandbox.getEntities().forEach(Entity::update);
     }
 }

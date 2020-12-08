@@ -2,13 +2,14 @@ package uet.oop.bomberman.entities.other;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.constants.GlobalConstants;
-
 import uet.oop.bomberman.entities.Entity;
 
-public class Bomb extends Entity {
-    public Bomb(int x, int y, Image img) {
-        super(x, y, img);
+/**
+ * cái này chắc ko cần đến
+ */
+public abstract class StillObjects extends Entity {
+    public StillObjects(int xUnit, int yUnit, Image img) {
+        super(xUnit, yUnit, img);
     }
 
     @Override
