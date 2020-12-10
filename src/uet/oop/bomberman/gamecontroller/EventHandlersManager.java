@@ -7,6 +7,7 @@ import uet.oop.bomberman.entities.other.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scene.Sandbox;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class EventHandlersManager {
@@ -34,7 +35,11 @@ public class EventHandlersManager {
         }
 
         if (keyBoardInputs.contains("SPACE")) {
-            player.setBomb();
+            if (player.canSetBomb()) {
+                player.setBombAndFlame();
+                player.decrementBombCount();
+            }
+
         }
 
         if (!keyBoardInputs.contains("LEFT") &&

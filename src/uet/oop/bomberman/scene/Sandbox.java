@@ -19,6 +19,7 @@ import uet.oop.bomberman.gamecontroller.EventHandler;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +129,15 @@ public class Sandbox {
             }
         }
         sc.close();
+    }
+
+    public static char getCharInTxtMap(int j, int i) throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("D:\\Game\\Bomberman\\res\\levels\\Level1.txt"));
+        String s = sc.nextLine();
+        while (i-- > 0) {
+            s = sc.nextLine();
+        }
+        return s.charAt(j);
     }
 
     private static void setBomber(int x, int y) {

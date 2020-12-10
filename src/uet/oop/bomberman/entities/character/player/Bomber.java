@@ -14,22 +14,62 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scene.Sandbox;
 import uet.oop.bomberman.entities.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Bomber extends Character {
     private int countImage = 0;
+    private int bombCount = 1;
 
     private boolean alive = true;
 
     protected List<Bomb> bombList = new ArrayList<Bomb>();
     protected List<Flame> flameList = new ArrayList<Flame>();
 
-    public void setBomb() {
-        bombList.add(new Bomb(Math.round((float) x/32),
-                Math.round((float) y/32), Sprite.bomb.getFxImage()));
-        flameList.add(new Flame(Math.round((float) x/32),
-                Math.round((float) y/32), Sprite.bomb_exploded.getFxImage()));
+    public void setBombAndFlame() {
+        int xUnit = Math.round((float) x/32);
+        int yUnit = Math.round((float) y/32);
+
+        bombList.add(new Bomb(xUnit, yUnit, Sprite.bomb.getFxImage()));
+        flameList.add(new Flame(xUnit, yUnit, Sprite.bomb_exploded.getFxImage()));
+        // check xUnit - 1, yUnit
+        // check XUnit + 1, yUnit
+        // check xUnit, yUnit + 1
+        // check xUnit, yUnit -1
+
+        if (checkObjInPos(xUnit -1, yUnit) != '#' ) {
+            flameList.add(new Flame(xUnit -1, yUnit,
+                    Sprite.explosion_vertical.getFxImage(), Direction.LEFT));
+        }
+        if (checkObjInPos(xUnit +1, yUnit) != '#') {
+            flameList.add(new Flame(xUnit + 1, yUnit,
+                    Sprite.explosion_vertical.getFxImage(), Direction.RIGHT));
+        }
+        if (checkObjInPos(xUnit, yUnit-1) != '#') {
+            flameList.add(new Flame(xUnit, yUnit -1,
+                    Sprite.explosion_horizontal.getFxImage(), Direction.UP));
+        }
+        if (checkObjInPos(xUnit, yUnit-1) != '#') {
+            flameList.add(new Flame(xUnit, yUnit + 1,
+                    Sprite.explosion_horizontal.getFxImage(), Direction.DOWN));
+        }
+    }
+
+    public char checkObjInPos(int j, int i) {
+        String s = null;
+        try {
+            Scanner sc = new Scanner(new File("D:\\Game\\Bomberman\\res\\levels\\Level1.txt"));
+            s = sc.nextLine();
+            while (i-- >= 0) {
+                s = sc.nextLine();
+            }
+        } catch (FileNotFoundException f) {
+            System.out.println("Khong load dc ban do");
+        }
+        return s.charAt(j);
     }
 
     public void setBomberSpeed(int speed) {
@@ -52,6 +92,7 @@ public class Bomber extends Character {
         for (int i = 0; i < bombList.size(); i++) {
             if (bombList.get(i).countImageBomb == 110) {
                 bombList.remove(i);
+                incrementBombCount();
             } else {
                 bombList.get(i).update();
             }
@@ -233,6 +274,18 @@ public class Bomber extends Character {
 
     public List<Flame> getFlameList() {
         return flameList;
+    }
+
+    public boolean canSetBomb() {
+        return bombCount > 0;
+    }
+
+    public void incrementBombCount(){
+        ++bombCount;
+    }
+
+    public void decrementBombCount(){
+        --bombCount;
     }
 
 }
