@@ -2,6 +2,11 @@ package uet.oop.bomberman.entities.other;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+<<<<<<< HEAD
+=======
+import uet.oop.bomberman.constants.GlobalConstants;
+
+>>>>>>> 6d8b7c518b60032a061934f704099f1eae0a2b47
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 

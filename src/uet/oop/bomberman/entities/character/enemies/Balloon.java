@@ -13,8 +13,11 @@ import uet.oop.bomberman.scene.Sandbox;
 import java.util.Random;
 
 public class Balloon extends Enemy {
+<<<<<<< HEAD
 
     public boolean alive = true;
+=======
+>>>>>>> 6d8b7c518b60032a061934f704099f1eae0a2b47
 
     public Balloon(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
