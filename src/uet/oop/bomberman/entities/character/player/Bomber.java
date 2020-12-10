@@ -20,8 +20,10 @@ import java.util.List;
 public class Bomber extends Character {
     private int countImage = 0;
 
-    private List<Bomb> bombList = new ArrayList<Bomb>();
-    private List<Flame> flameList = new ArrayList<Flame>();
+    private boolean alive = true;
+
+    protected List<Bomb> bombList = new ArrayList<Bomb>();
+    protected List<Flame> flameList = new ArrayList<Flame>();
 
     public void setBomb() {
         bombList.add(new Bomb(Math.round((float) x/32),
@@ -40,9 +42,15 @@ public class Bomber extends Character {
 
     @Override
     public void update() {
+        EventHandlersManager.handleBomberEvents();
+
+        if (!alive && countImage == 60) {
+            System.exit(1);
+        }
+
         // update list bomb
         for (int i = 0; i < bombList.size(); i++) {
-            if (bombList.get(i).countImageBomb == 200) {
+            if (bombList.get(i).countImageBomb == 110) {
                 bombList.remove(i);
             } else {
                 bombList.get(i).update();
@@ -51,7 +59,7 @@ public class Bomber extends Character {
 
         // update list flame
         for (int i = 0; i < flameList.size(); i++) {
-            if (flameList.get(i).countImageFlame == 220) {
+            if (flameList.get(i).countImageFlame == 180) {
                 flameList.remove(i);
             } else {
                 flameList.get(i).update();
@@ -64,20 +72,23 @@ public class Bomber extends Character {
         for (Bomb b : bombList) {
             b.render(gc);
         }
+
         for (Flame f : flameList) {
             f.render(gc);
         }
+
         gc.drawImage(img, x, y);
     }
 
     @Override
     public void killed() {
-
+        countImage = 0;
+        alive = false;
     }
 
     @Override
     public void move() {
-        EventHandlersManager.handleBomberEvents();
+
     }
 
     public void move(Direction direction) {
@@ -98,6 +109,8 @@ public class Bomber extends Character {
                 move(0, 0);
                 break;
         }
+
+        // hoạt ảnh chuyển động nhân vật theo hướng đi hiện tại
         animationsInSameDirection(direction);
     }
 
@@ -105,13 +118,19 @@ public class Bomber extends Character {
     // the rectangle around the bomber slightly smaller than the bomber
     @Override
     public Rectangle2D getBoundary() {
-        return new Rectangle2D(x + 3, y + 3, 19, 26);
+        return new Rectangle2D(x + 2, y + 3, 21, 27);
     }
 
     @Override
     public boolean canMove() {
         for (Entity e : Sandbox.getStillObjects()) {
             if (e instanceof Grass) continue;
+            if (collide(e)) {
+                return false;
+            }
+        }
+        for (Entity e : Sandbox.getEntities()) {
+            if (e instanceof Bomber) continue;
             if (collide(e)) {
                 return false;
             }
@@ -133,6 +152,18 @@ public class Bomber extends Character {
     }
 
     private void animationsInSameDirection(Direction direction) {
+        if (!alive) {
+            img = Sprite.player_dead1.getFxImage();
+            if (countImage == 20) {
+                img = Sprite.player_dead2.getFxImage();
+            }
+            else if (countImage == 40) {
+                img = Sprite.player_dead3.getFxImage();
+            }
+            countImage ++;
+            return;
+        }
+
         switch (direction) {
             case UP:
                 if (countImage == 0) {
@@ -200,16 +231,8 @@ public class Bomber extends Character {
         }
     }
 
-    public Entity createBomb() {
-        return new Bomb(x, y, Sprite.bomb_2.getFxImage());
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+    public List<Flame> getFlameList() {
+        return flameList;
     }
 
 }

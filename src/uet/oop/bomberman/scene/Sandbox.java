@@ -133,7 +133,6 @@ public class Sandbox {
     private static void setBomber(int x, int y) {
         bomber = new Bomber(x, y, Sprite.player_down.getFxImage());
         bomber.setBomberSpeed(GlobalConstants.SPEED_BOMBER);
-        entities.add(bomber);
     }
 
 

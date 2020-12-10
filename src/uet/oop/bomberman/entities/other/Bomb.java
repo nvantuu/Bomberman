@@ -18,10 +18,6 @@ public class Bomb extends Entity {
         gc.drawImage(img, x, y);
     }
 
-    @Override
-    public Rectangle2D getBoundary() {
-        return new Rectangle2D(x, y, 32, 32);
-    }
 
     @Override
     public void update() {
@@ -32,10 +28,10 @@ public class Bomb extends Entity {
         if (countImageBomb == 0) {
             img = Sprite.bomb.getFxImage();
         }
-        else if (countImageBomb == 50) {
+        else if (countImageBomb == 40) {
             img = Sprite.bomb_1.getFxImage();
         }
-        else if (countImageBomb == 120) {
+        else if (countImageBomb == 80) {
             img = Sprite.bomb_2.getFxImage();
         }
         countImageBomb++;

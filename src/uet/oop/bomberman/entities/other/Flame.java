@@ -11,21 +11,21 @@ public class Flame extends Entity {
         super(xUnit, yUnit, null);
     }
 
-    private void animationFlame() {
-        if (countImageFlame == 120) {
-            img = Sprite.bomb_exploded.getFxImage();
-        }
-        if (countImageFlame == 150) {
-            img = Sprite.bomb_exploded1.getFxImage();
-        }
-        if (countImageFlame == 180) {
-            img = Sprite.bomb_exploded2.getFxImage();
-        }
-        countImageFlame++;
-    }
-
     @Override
     public void update() {
         animationFlame();
+    }
+
+    private void animationFlame() {
+        if (countImageFlame == 110) {
+            img = Sprite.bomb_exploded.getFxImage();
+        }
+        if (countImageFlame == 130) {
+            img = Sprite.bomb_exploded1.getFxImage();
+        }
+        if (countImageFlame == 150) {
+            img = Sprite.bomb_exploded2.getFxImage();
+        }
+        countImageFlame++;
     }
 }

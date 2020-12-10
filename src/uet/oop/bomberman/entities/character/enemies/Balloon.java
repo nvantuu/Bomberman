@@ -5,13 +5,16 @@ import javafx.scene.image.Image;
 
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.character.Character;
+import uet.oop.bomberman.entities.character.player.Bomber;
+import uet.oop.bomberman.entities.other.Flame;
 import uet.oop.bomberman.entities.other.Grass;
 import uet.oop.bomberman.scene.Sandbox;
 
 import java.util.Random;
 
 public class Balloon extends Enemy {
+
+    public boolean alive = true;
 
     public Balloon(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -58,6 +61,10 @@ public class Balloon extends Enemy {
             }
         }
         return true;
+    }
+
+    public boolean isAlive() {
+        return alive;
     }
 
     public Rectangle2D getBoundary() {

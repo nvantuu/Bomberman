@@ -16,6 +16,10 @@ public abstract class Character extends Entity {
         super(xUnit, yUnit, img);
     }
 
+    public boolean isAlive() {
+        return alive;
+    }
+
     @Override
     public abstract void update();
 

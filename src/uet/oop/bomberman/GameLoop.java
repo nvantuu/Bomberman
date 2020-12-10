@@ -3,12 +3,9 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.other.Bomb;
+import uet.oop.bomberman.entities.character.enemies.Enemy;
 import uet.oop.bomberman.gamecontroller.EventHandlersManager;
-import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scene.Sandbox;
-
-import java.util.Iterator;
 
 public class GameLoop {
     static double oldGameTime;
@@ -36,15 +33,18 @@ public class GameLoop {
         gc.clearRect(0, 0, Sandbox.getCanvas().getWidth(), Sandbox.getCanvas().getHeight());
         Sandbox.getStillObjects().forEach(g -> g.render(gc));
         Sandbox.getEntities().forEach(g -> g.render(gc));
+        Sandbox.getBomber().render(gc);
     }
 
     /**
      * Hàm cập nhật lại các đối tượng.
      */
     public static void updateGame() {
-        //Sandbox.getStillObjects().forEach(Entity::update);
-        EventHandlersManager.handleBomberEvents();
-        Sandbox.getEntities().forEach(Entity::update);
+        // Đối tương bomber quản lí list bom, flame, và vị trị của chính nó
+        // các va chạm với các list nên được sử lí trước tại đây.
+        Sandbox.getBomber().update();
         Sandbox.getStillObjects().forEach(Entity::update);
+        Sandbox.getEntities().forEach(Entity::update);
+
     }
 }
