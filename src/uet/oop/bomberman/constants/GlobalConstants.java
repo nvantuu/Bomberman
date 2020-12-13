@@ -1,7 +1,5 @@
 package uet.oop.bomberman.constants;
 
-import uet.oop.bomberman.graphics.Sprite;
-
 /**
  * thêm BOMB_RADIUS, BOMB_RATE
  * addBombRate để cập nhật số bom đc đặt trên màn hình
@@ -16,11 +14,19 @@ public class GlobalConstants {
     public static int BOMB_RADIUS = 1;
     public static int BOMB_RATE = 1;
 
-    public static int pixelToTile(int i){
-        return i / Sprite.DEFAULT_SIZE;
+    public static void addBombRate (int i){
+        BOMB_RATE += i;
     }
 
-    public static void addBombRate (int i){
-        BOMB_RATE += 1;
+    public static void increaseBombRadius () {
+        BOMB_RADIUS = 2;
+    }
+
+    public static int getBombRate() {
+        return BOMB_RATE;
+    }
+
+    public static int getBombRadius() {
+        return BOMB_RADIUS;
     }
 }

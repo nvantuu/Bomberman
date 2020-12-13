@@ -1,12 +1,8 @@
 package uet.oop.bomberman.entities;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
@@ -27,11 +23,6 @@ public abstract class Entity {
         this.img = img;
     }
 
-    public Entity( int xUnit, int yUnit) {
-        this.x = xUnit * Sprite.SCALED_SIZE;
-        this.y = yUnit * Sprite.SCALED_SIZE;
-    }
-
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
     }
@@ -44,28 +35,20 @@ public abstract class Entity {
         return img;
     }
 
-    public void remove() {
-        _removed = true;
-    }
-
-    public boolean isRemoved() {
-        return _removed;
-    }
-
     public int getX() {
-        return x;
+        return Math.round((float) x / 32);
     }
 
     public int getY() {
+        return Math.round((float) y / 32);
+    }
+
+    public int getXCanvas(){
+        return x;
+    }
+
+    public int getYCanvas(){
         return y;
-    }
-
-    public int getXTile (){
-        return GlobalConstants.pixelToTile(x + Sprite.DEFAULT_SIZE / 2);
-    }
-
-    public int getYTile (){
-        return GlobalConstants.pixelToTile(y - Sprite.DEFAULT_SIZE / 2);
     }
 
     public abstract boolean collide (Entity e);

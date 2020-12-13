@@ -5,9 +5,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.Character;
 
 public abstract class Enemy extends Character {
-
     public Enemy(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
-
 }

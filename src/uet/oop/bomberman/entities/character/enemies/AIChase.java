@@ -1,15 +1,13 @@
 package uet.oop.bomberman.entities.character.enemies;
 
 import uet.oop.bomberman.entities.character.player.Bomber;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.scene.Sandbox;
 
 import java.util.Random;
 
 public class AIChase {
     Bomber _bomber;
     Enemy _e;
-    private final int distanceToChase = 5;
+    private final int distanceToChase = 4;
 
     public AIChase(Bomber bomber, Enemy e){
         _bomber = bomber;
@@ -17,8 +15,8 @@ public class AIChase {
     }
 
     public int calculateDirection(){
-        int XDistance = _bomber.getXTile() - _e.getXTile();
-        int YDistance = _bomber.getYTile() - _e.getYTile();
+        int XDistance = _bomber.getX() - _e.getX();
+        int YDistance = _bomber.getY() - _e.getY();
         boolean chasing = Math.abs(XDistance) <= distanceToChase && Math.abs(YDistance) <= distanceToChase;
 
         Random random = new Random();

@@ -12,6 +12,8 @@ public abstract class Character extends Entity {
 
     protected boolean alive = true;
 
+    protected int countImageAfterKill = 120;
+
     public Character(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
@@ -24,6 +26,10 @@ public abstract class Character extends Entity {
     public abstract boolean canMove();
 
     public abstract boolean collide(Entity e);
+
+    public abstract boolean isAlive();
+
+    public abstract void afterKill();
 
     public void move(int deltaX, int deltaY) {
         if (deltaX == 0 && deltaY == 0) {
@@ -40,4 +46,8 @@ public abstract class Character extends Entity {
     }
 
     public abstract void killed();
+
+    public int getCountImageAfterKill() {
+        return countImageAfterKill;
+    }
 }

@@ -1,137 +1,204 @@
 package uet.oop.bomberman.entities.other.bomb;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.other.Grass;
-import uet.oop.bomberman.entities.other.LayeredEntity;
+import uet.oop.bomberman.entities.other.Brick;
+import uet.oop.bomberman.entities.other.Wall;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.scene.Sandbox;
 import uet.oop.bomberman.entities.character.Character;
+import uet.oop.bomberman.scene.Sandbox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Flame extends Entity {
-    public static Flame[] _flame;
-    public int direction;
-    public int radius;
-    public int startX, startY;
-    public FlameSegment[] flameSegments = new FlameSegment[0];
+    public int countImageFlame = 0;
+    public List<FlameSegment> flameSegments = new ArrayList<>();
 
-    public Flame(int xUnit, int yUnit, Image img, int direction, int radius) {
-        super(xUnit, yUnit, img);
-        startX = xUnit;
-        startY = yUnit;
-        this.direction = direction;
-        this.radius = radius;
-        createFlameSegments();
+    public Flame(int xUnit, int yUnit,Image img) {
+        super(xUnit, yUnit, null);
+        setFlameSegments();
     }
 
-    public void createFlameSegments(){
-        flameSegments = new FlameSegment[calculatePermittedDistance()];
+    private void animationFlame() {
+        if (countImageFlame == 10) {
+            img = Sprite.bomb_exploded.getFxImage();
+        }
+        if (countImageFlame == 40) {
+            img = Sprite.bomb_exploded1.getFxImage();
+        }
+        if (countImageFlame == 80) {
+            img = Sprite.bomb_exploded2.getFxImage();
+        }
+        countImageFlame++;
+    }
 
-        if (direction == 0){ //up
-            for (int i = 0; i < flameSegments.length; i++){
-                if (i == flameSegments.length - 1){
-                    flameSegments[i] = new FlameSegment(this.getX(), this.getY() - i - 1, direction, true);
+    public void setFlameSegments(){
+        createFlameSegmentsUp();
+        createFlameSegmentsDown();
+        createFlameSegmentsLeft();
+        createFlameSegmentsRight();
+    }
 
-                    if (Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY()) instanceof LayeredEntity){
-                        LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY());
-                        tmp.addToTop(flameSegments[i]);
-                    }
-                    else Sandbox.addEntities(flameSegments[i]);
-                }
-                else {
-                    flameSegments[i] = new FlameSegment(this.getX(), this.getY() - i - 1, direction, false);
+    public void createFlameSegmentsUp(){
+        FlameSegment[] flameSegmentsUp = new FlameSegment[calculatePermittedDistance(0)];
 
-                    if (Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY()) instanceof LayeredEntity){
-                        LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY());
-                        tmp.addToTop(flameSegments[i]);
-                    }
-                    else Sandbox.addEntities(flameSegments[i]);
+        boolean _last = false;
+        int _x = this.getX();
+        int _y = this.getY();
+        for (int i = 0; i < flameSegmentsUp.length; i++){
+            _y--;
+
+            if (i == flameSegmentsUp.length - 1){
+                _last = true;
+                flameSegmentsUp[i] = new FlameSegment(_x, _y, Sprite.explosion_vertical_top_last2.getFxImage(), 0, _last);
+            }
+            else {
+                flameSegmentsUp[i] = new FlameSegment(_x, _y, Sprite.explosion_vertical2.getFxImage(), 0, _last);
+            }
+        }
+
+        if(flameSegmentsUp.length < GlobalConstants.BOMB_RADIUS || flameSegmentsUp.length == 0){
+            for (Entity obj : Sandbox.getStillObjects()){
+                if (obj instanceof Brick && obj.getX() == _x && obj.getY() == _y - 1){
+                    ((Brick) obj).Destroy();
                 }
             }
         }
 
-        if (direction == 1){ //down
-            for (int i = 0; i < flameSegments.length; i++){
-                if (i == flameSegments.length - 1){
-                    flameSegments[i] = new FlameSegment(this.getX(), this.getY() - i - 1, direction, true);
-
-                    if (Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY()) instanceof LayeredEntity){
-                        LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY());
-                        tmp.addToTop(flameSegments[i]);
-                    }
-                    else Sandbox.addEntities(flameSegments[i]);
-                }
-                else {
-                    flameSegments[i] = new FlameSegment(this.getX(), this.getY() - i - 1, direction, false);
-
-                    if (Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY()) instanceof LayeredEntity){
-                        LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY());
-                        tmp.addToTop(flameSegments[i]);
-                    }
-                    else Sandbox.addEntities(flameSegments[i]);
-                }
-            }
-        }
-
-        if (direction == 2){ //left
-            for (int i = 0; i < flameSegments.length; i++){
-                if (i == flameSegments.length - 1){
-                    flameSegments[i] = new FlameSegment(this.getX(), this.getY() - i - 1, direction, true);
-
-                    if (Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY()) instanceof LayeredEntity){
-                        LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY());
-                        tmp.addToTop(flameSegments[i]);
-                    }
-                    else Sandbox.addEntities(flameSegments[i]);
-                }
-                else {
-                    flameSegments[i] = new FlameSegment(this.getX(), this.getY() - i - 1, direction, false);
-
-                    if (Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY()) instanceof LayeredEntity){
-                        LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY());
-                        tmp.addToTop(flameSegments[i]);
-                    }
-                    else Sandbox.addEntities(flameSegments[i]);
-                }
-            }
-        }
-
-        if (direction == 3){ // right
-            for (int i = 0; i < flameSegments.length; i++){
-                if (i == flameSegments.length - 1){
-                    flameSegments[i] = new FlameSegment(this.getX(), this.getY() - i - 1, direction, true);
-
-                    if (Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY()) instanceof LayeredEntity){
-                        LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY());
-                        tmp.addToTop(flameSegments[i]);
-                    }
-                    else Sandbox.addEntities(flameSegments[i]);
-                }
-                else {
-                    flameSegments[i] = new FlameSegment(this.getX(), this.getY() - i - 1, direction, false);
-
-                    if (Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY()) instanceof LayeredEntity){
-                        LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY());
-                        tmp.addToTop(flameSegments[i]);
-                    }
-                    else Sandbox.addEntities(flameSegments[i]);
-                }
-            }
+        for (int i = 0; i < flameSegmentsUp.length; i++){
+            this.flameSegments.add(flameSegmentsUp[i]);
         }
     }
 
-    public int calculatePermittedDistance(){
+    public void createFlameSegmentsDown(){
+        FlameSegment[] flameSegmentsDown = new FlameSegment[calculatePermittedDistance(2)];
+
+        boolean _last = false;
+        int _x = this.getX();
+        int _y = this.getY();
+        for (int i = 0; i < flameSegmentsDown.length; i++){
+            _y++;
+
+            if (i == flameSegmentsDown.length - 1){
+                _last = true;
+                flameSegmentsDown[i] = new FlameSegment(_x, _y, Sprite.explosion_vertical_down_last2.getFxImage(), 2, _last);
+            }
+            else {
+                flameSegmentsDown[i] = new FlameSegment(_x, _y, Sprite.explosion_vertical2.getFxImage(), 2, _last);
+            }
+        }
+
+        if(flameSegmentsDown.length < GlobalConstants.BOMB_RADIUS || flameSegmentsDown.length == 0){
+            for (Entity obj : Sandbox.getStillObjects()){
+                if (obj instanceof Brick && obj.getX() == _x && obj.getY() == _y + 1){
+                    ((Brick) obj).Destroy();
+                }
+            }
+        }
+
+        for (int i = 0; i < flameSegmentsDown.length; i++){
+            this.flameSegments.add(flameSegmentsDown[i]);
+        }
+    }
+
+    public void createFlameSegmentsLeft(){
+        FlameSegment[] flameSegmentsLeft = new FlameSegment[calculatePermittedDistance(3)];
+
+        boolean _last = false;
+        int _x = this.getX();
+        int _y = this.getY();
+        for (int i = 0; i < flameSegmentsLeft.length; i++){
+            _x--;
+
+            if (i == flameSegmentsLeft.length - 1){
+                _last = true;
+                flameSegmentsLeft[i] = new FlameSegment(_x, _y, Sprite.explosion_horizontal_left_last2.getFxImage(), 3, _last);
+            }
+            else {
+                flameSegmentsLeft[i] = new FlameSegment(_x, _y, Sprite.explosion_horizontal2.getFxImage(), 3, _last);
+            }
+        }
+
+        if(flameSegmentsLeft.length < GlobalConstants.BOMB_RADIUS || flameSegmentsLeft.length == 0){
+            for (Entity obj : Sandbox.getStillObjects()){
+                if (obj instanceof Brick && obj.getX() == _x - 1 && obj.getY() == _y){
+                    ((Brick) obj).Destroy();
+                }
+            }
+        }
+
+        for (int i = 0; i < flameSegmentsLeft.length; i++){
+            this.flameSegments.add(flameSegmentsLeft[i]);
+        }
+    }
+
+    public void createFlameSegmentsRight(){
+        FlameSegment[] flameSegmentsRight = new FlameSegment[calculatePermittedDistance(1)];
+
+        boolean _last = false;
+        int _x = this.getX();
+        int _y = this.getY();
+        for (int i = 0; i < flameSegmentsRight.length; i++){
+            _x++;
+
+            if (i == flameSegmentsRight.length - 1){
+                _last = true;
+                flameSegmentsRight[i] = new FlameSegment(_x, _y, Sprite.explosion_horizontal_right_last2.getFxImage(), 1, _last);
+            }
+            else {
+                flameSegmentsRight[i] = new FlameSegment(_x, _y, Sprite.explosion_horizontal2.getFxImage(), 1, _last);
+            }
+        }
+
+        if(flameSegmentsRight.length < GlobalConstants.BOMB_RADIUS || flameSegmentsRight.length == 0){
+            for (Entity obj : Sandbox.getStillObjects()){
+                if (obj instanceof Brick && obj.getX() == _x + 1 && obj.getY() == _y){
+                    ((Brick) obj).Destroy();
+                }
+            }
+        }
+
+        for (int i = 0; i < flameSegmentsRight.length; i++){
+            this.flameSegments.add(flameSegmentsRight[i]);
+        }
+    }
+
+    public int calculatePermittedDistance(int direction){
+        int radius = 0;
+        int _x = this.getX();
+        int _y = this.getY();
+
+        while (radius < GlobalConstants.getBombRadius()){
+            if (direction == 0) _y--;
+            if (direction == 1) _x++;
+            if (direction == 2) _y++;
+            if (direction == 3) _x--;
+
+            Entity a = Sandbox.getStillObjectsAt(_x, _y);
+
+            if (a instanceof Wall){
+                break;
+            }
+
+            if (a instanceof Brick){
+                break;
+            }
+
+            radius++;
+        }
+
         return radius;
     }
 
-    public FlameSegment flameSegmentAt (int x, int y){
-        for (int i = 0; i < flameSegments.length; i++){
-            if (flameSegments[i].getX() == x && flameSegments[i].getY() == y){
-                return flameSegments[i];
-            }
+    public void render (GraphicsContext gc){
+        for (FlameSegment fu : flameSegments) {
+            fu.render(gc);
         }
-        return null;
+        gc.drawImage(img, x, y);
     }
 
     @Override
@@ -141,58 +208,36 @@ public class Flame extends Entity {
 
     @Override
     public void update() {
+        for (int i = 0; i < flameSegments.size(); i++){
+            if (flameSegments.get(i).countFlameSegment == 180){
+                flameSegments.remove(i);
+            }
+            else flameSegments.get(i).update();
+        }
+        animationFlame();
+        collideBomber();
+    }
+
+    public void collideBomber(){
         if (this.getBoundary().intersects(Sandbox.getBomber().getBoundary())){
-            Sandbox.getBomber().collide(this);
-        }
-
-        for (int i = 0; i < flameSegments.length; i++){
-            if (Sandbox.getBombsAt(flameSegments[i].getX(), flameSegments[i].getY()) != null){
-                Sandbox.getBombsAt(flameSegments[i].getX(), flameSegments[i].getY()).collide(this);
-            }
-        }
-
-        for (int i = 0; i < flameSegments.length; i++){
-            if (Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY()) instanceof LayeredEntity){
-                LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(flameSegments[i].getX(), flameSegments[i].getY());
-
-                if (tmp.getTopEntity() instanceof FlameSegment){
-                    while (!(tmp.getTopEntity() instanceof Grass)){
-                        tmp.getTopEntity().remove();
-                        tmp.update();
-                    }
-                }
-                else if (tmp.getTopEntity() instanceof Grass){
-                    Sandbox.addStillObjects(new Grass(flameSegments[i].getX(), flameSegments[i].getY(), Sprite.grass.getFxImage()));
-                }
-            }
-        }
-
-        if (Sandbox.getEntityAt(this.getX(), this.getY()) instanceof LayeredEntity){
-            //LayeredEntity tmp = (LayeredEntity) Sandbox.getStillObjectsAt(this.x, this.y);
-            Sandbox.addStillObjects(new Grass(this.x, this.y, Sprite.grass.getFxImage()));
-        }
-
-        for (Entity obj : Sandbox.getEntities()){
-            if (obj instanceof FlameSegment){
-                for (Entity obj1 : Sandbox.getEntities()){
-                    if (obj1 instanceof Character){
-                        if (obj.getBoundary().intersects(obj1.getBoundary())){
-                            obj.collide(obj1);
-                        }
-                    }
-                }
-                Sandbox.addStillObjects(new Grass(obj.getX(), obj.getY(), Sprite.grass.getFxImage()));
-            }
+            Sandbox.getBomber().killed();
         }
     }
 
     @Override
     public boolean collide(Entity e) {
         if (e instanceof Character){
-            ((Character) e).killed();
-            return true;
+            boolean tf = this.getBoundary().intersects(e.getBoundary());
+            if (tf){
+                ((Character) e).killed();
+                return true;
+            }
         }
 
         return false;
+    }
+
+    public List<FlameSegment> getFlameSegments() {
+        return flameSegments;
     }
 }

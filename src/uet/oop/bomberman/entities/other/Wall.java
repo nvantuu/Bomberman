@@ -4,7 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Entity;
 
-public class Wall extends StillObjects {
+public class Wall extends Entity {
 
     public Wall(int x, int y, Image img) {
         super(x, y, img);

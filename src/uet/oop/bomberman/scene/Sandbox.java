@@ -14,7 +14,9 @@ import uet.oop.bomberman.entities.other.Brick;
 import uet.oop.bomberman.entities.other.Grass;
 import uet.oop.bomberman.entities.other.Wall;
 import uet.oop.bomberman.entities.character.player.Bomber;
-import uet.oop.bomberman.entities.other.bomb.Bomb;
+import uet.oop.bomberman.entities.other.item.BombItem;
+import uet.oop.bomberman.entities.other.item.FlameItem;
+import uet.oop.bomberman.entities.other.item.Item;
 import uet.oop.bomberman.gamecontroller.EventHandler;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -39,7 +41,6 @@ public class Sandbox {
 
     private static final List<Entity> entities = new ArrayList<>();
     private static final List<Entity> stillObjects = new ArrayList<>();
-    private static List<Bomb> bombs = new ArrayList<>();
 
     public static void setupScene(){
         if(!sceneStarted){
@@ -103,6 +104,24 @@ public class Sandbox {
                         setBomber(j, i);
                         break;
 
+                    case 'b':
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
+                        object = new BombItem(j, i, Sprite.powerup_bombs.getFxImage());
+                        stillObjects.add(object);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
+                        stillObjects.add(object);
+                        break;
+
+                    case 'f':
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
+                        object = new FlameItem(j, i, Sprite.powerup_flames.getFxImage());
+                        stillObjects.add(object);
+                        object = new Brick(j, i, Sprite.brick.getFxImage());
+                        stillObjects.add(object);
+                        break;
+
                     case '1': // Balloon
                         object = new Grass(j, i, Sprite.grass.getFxImage());
                         stillObjects.add(object);
@@ -140,54 +159,19 @@ public class Sandbox {
         return entities;
     }
 
-    public static void addEntities (Entity e){
-        entities.add(e);
-    }
-
-    public static Entity getEntityAt (int x, int y){
-        for (Entity obj : entities){
-            if (x == obj.getX() && y == obj.getY()){
-                return obj;
-            }
-        }
-
-        return null;
-    }
-
     public static List<Entity> getStillObjects() {
         return stillObjects;
     }
 
-    public static void addStillObjects (Entity e){
-        stillObjects.add(e);
-    }
-
     public static Entity getStillObjectsAt (int x, int y){
         for (Entity obj : stillObjects){
+            if (obj instanceof Grass) continue;
+            if (obj instanceof Item) continue;
             if (x == obj.getX() && y == obj.getY()){
                 return obj;
             }
         }
 
-        return null;
-    }
-
-    public static List<Bomb> getBombs() {
-        return bombs;
-    }
-
-    /**
-     * đặt bom tại vị trí chỉ định
-     * @param x
-     * @param y
-     * @return
-     */
-    public static Bomb getBombsAt(int x, int y) {
-        for (Bomb obj : bombs){
-            if (x == obj.getX() && y == obj.getY()){
-                return obj;
-            }
-        }
         return null;
     }
 

@@ -4,9 +4,12 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.character.Character;
 import uet.oop.bomberman.entities.character.player.Bomber;
 import uet.oop.bomberman.entities.other.Grass;
+import uet.oop.bomberman.entities.other.bomb.Bomb;
+import uet.oop.bomberman.entities.other.bomb.Flame;
+import uet.oop.bomberman.entities.other.bomb.FlameSegment;
+import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scene.Sandbox;
 
 public class Oneal extends Enemy {
@@ -19,11 +22,26 @@ public class Oneal extends Enemy {
     }
 
     @Override
+    public boolean isAlive() {
+        return this.alive;
+    }
+
+    @Override
+    public void afterKill() {
+        if (this.countImageAfterKill > 0){
+            this.countImageAfterKill--;
+        }
+    }
+
+    @Override
     public Rectangle2D getBoundary() {
         return new Rectangle2D(x, y, 32, 32);
     }
 
     public void update() {
+        if (!this.alive){
+            afterKill();
+        }
         move();
     }
 
@@ -73,11 +91,38 @@ public class Oneal extends Enemy {
 
     @Override
     public boolean canMove() {
+        if (!this.alive){
+            return false;
+        }
         for (Entity e : Sandbox.getStillObjects()) {
             if (e instanceof Grass) continue;
             if (collide(e)) {
                 ranDomCurrentDirection();
                 return false;
+            }
+        }
+        for (Bomb e : Sandbox.getBomber().getBombs()){
+            if (collide(e)){
+                ranDomCurrentDirection();
+                return false;
+            }
+        }
+        for (Bomb obj : Sandbox.getBomber().getBombs()){
+            for (Flame obj1 : obj.getFlames()){
+                for (FlameSegment e : obj1.getFlameSegments()){
+                    if (collide(e)){
+                        killed();
+                        return false;
+                    }
+                }
+            }
+        }
+        for (Entity e : Sandbox.getEntities()){
+            if (e instanceof Bomber){
+                if (collide(e)){
+                    ((Bomber) e).killed();
+                    return true;
+                }
             }
         }
         return true;
@@ -91,7 +136,8 @@ public class Oneal extends Enemy {
 
     @Override
     public void killed() {
-
+        this.alive = false;
+        img = Sprite.oneal_dead.getFxImage();
     }
 
 

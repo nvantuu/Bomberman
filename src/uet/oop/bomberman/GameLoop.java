@@ -2,10 +2,11 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.other.bomb.Flame;
+import uet.oop.bomberman.entities.other.Brick;
+import uet.oop.bomberman.entities.other.item.Item;
 import uet.oop.bomberman.scene.Sandbox;
 import uet.oop.bomberman.gamecontroller.EventHandlersManager;
+import uet.oop.bomberman.entities.character.Character;
 
 public class GameLoop {
     static double oldGameTime;
@@ -33,17 +34,52 @@ public class GameLoop {
         gc.clearRect(0, 0, Sandbox.getCanvas().getWidth(), Sandbox.getCanvas().getHeight());
         Sandbox.getStillObjects().forEach(g -> g.render(gc));
         Sandbox.getEntities().forEach(g -> g.render(gc));
-        /*for (int i = 0; i < Flame._flame.length; i++){
-            Flame._flame[i].render(gc);
-        }
-
-         */
     }
 
     /**
      * Hàm cập nhật lại các đối tượng.
      */
     public static void updateGame() {
-        Sandbox.getEntities().forEach(Entity::update);
+        EventHandlersManager.handleBomberEvents();
+        for (int i = 0; i < Sandbox.getStillObjects().size(); i++){
+            // xóa brick
+            if (Sandbox.getStillObjects().get(i) instanceof Brick){
+                if (((Brick) Sandbox.getStillObjects().get(i)).isDestroy()){
+                    if (((Brick) Sandbox.getStillObjects().get(i)).countImageBrick > 0){
+                        ((Brick) Sandbox.getStillObjects().get(i)).afterDestroy();
+                    }
+                    else {
+                        Sandbox.getStillObjects().remove(i);
+                    }
+                }
+                else {
+                    Sandbox.getStillObjects().get(i).update();
+                }
+            }
+            //xóa item
+            else if (Sandbox.getStillObjects().get(i) instanceof Item){
+                if (((Item) Sandbox.getStillObjects().get(i)).isActive()){
+                    Sandbox.getStillObjects().remove(i);
+                }
+                else {
+                    Sandbox.getStillObjects().get(i).update();
+                }
+            }
+            else {
+                Sandbox.getStillObjects().get(i).update();
+            }
+        }
+        for (int i = 0; i < Sandbox.getEntities().size(); i++) {
+            //xóa nhân vật
+            if (!((Character) Sandbox.getEntities().get(i)).isAlive()) {
+                if (((Character) Sandbox.getEntities().get(i)).getCountImageAfterKill() > 0) {
+                    ((Character) Sandbox.getEntities().get(i)).afterKill();
+                } else {
+                    Sandbox.getEntities().remove(i);
+                }
+            } else {
+                Sandbox.getEntities().get(i).update();
+            }
+        }
     }
 }
