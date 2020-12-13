@@ -12,7 +12,6 @@ public class EventHandlersManager {
 
         if (keyBoardInputs.contains("UP") || keyBoardInputs.contains("W")) {
             Sandbox.getBomber().move(Direction.UP);
-            //Sandbox.getBomber().setCurrentDirection(Direction.UP);
         }
 
         if (keyBoardInputs.contains("DOWN") || keyBoardInputs.contains("S")) {

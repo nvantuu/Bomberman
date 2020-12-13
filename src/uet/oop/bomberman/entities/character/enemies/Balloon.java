@@ -72,6 +72,8 @@ public class Balloon extends Enemy {
         if (!this.alive){
             return false;
         }
+
+        // xét va chạm với vật thể không chuyển động
         for (Entity e : Sandbox.getStillObjects()) {
             if (e instanceof Grass) continue;
             if (collide(e)) {
@@ -79,12 +81,16 @@ public class Balloon extends Enemy {
                 return false;
             }
         }
+
+        // xét va chạm với bomb
         for (Bomb e : Sandbox.getBomber().getBombs()){
             if (collide(e)){
                 ranDomCurrentDirection();
                 return false;
             }
         }
+
+        // xét va chạm với flame
         for (Bomb obj : Sandbox.getBomber().getBombs()){
             for (Flame obj1 : obj.getFlames()){
                 for (FlameSegment e : obj1.getFlameSegments()){
@@ -95,6 +101,8 @@ public class Balloon extends Enemy {
                 }
             }
         }
+
+        // xét va chạm với player
         for (Entity e : Sandbox.getEntities()){
             if (e instanceof Bomber){
                 if (collide(e)) {

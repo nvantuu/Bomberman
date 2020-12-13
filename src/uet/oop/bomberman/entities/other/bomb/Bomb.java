@@ -82,8 +82,6 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-
-
         if (timeToExplode > 1){
             timeToExplode--;
         }
@@ -98,13 +96,16 @@ public class Bomb extends Entity {
         animationBomb();
     }
 
+    /**
+     * xét va chạm với player khi vừa mới đặt bom
+     */
     @Override
     public boolean collide(Entity e) {
         if (e instanceof Bomber){
             int diffX = e.getXCanvas() - this.getXCanvas();
             int diffY = e.getYCanvas() - this.getYCanvas();
 
-            if (!((Math.abs(diffX)) < 32 && Math.abs(diffY) < 32)){
+            if (!(diffX < 32 && diffX > -26 && Math.abs(diffY) < 32)){
                 through = false;
             }
         }

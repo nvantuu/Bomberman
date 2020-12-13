@@ -45,6 +45,9 @@ public class Oneal extends Enemy {
         move();
     }
 
+    /**
+     *  cứ đi chuyển được 1 ô hoặc không đi được thì random
+     */
     @Override
     public void move() {
         ranDomCurrentDirection();
@@ -94,19 +97,23 @@ public class Oneal extends Enemy {
         if (!this.alive){
             return false;
         }
+
+        // xét va chạm với vật thể không chuyển động
         for (Entity e : Sandbox.getStillObjects()) {
             if (e instanceof Grass) continue;
             if (collide(e)) {
-                ranDomCurrentDirection();
                 return false;
             }
         }
+
+        // xét va chạm với bom
         for (Bomb e : Sandbox.getBomber().getBombs()){
             if (collide(e)){
-                ranDomCurrentDirection();
                 return false;
             }
         }
+
+        // xét va chạm với flame
         for (Bomb obj : Sandbox.getBomber().getBombs()){
             for (Flame obj1 : obj.getFlames()){
                 for (FlameSegment e : obj1.getFlameSegments()){
@@ -117,6 +124,8 @@ public class Oneal extends Enemy {
                 }
             }
         }
+
+        // xét va chạm với player
         for (Entity e : Sandbox.getEntities()){
             if (e instanceof Bomber){
                 if (collide(e)){
@@ -140,7 +149,9 @@ public class Oneal extends Enemy {
         img = Sprite.oneal_dead.getFxImage();
     }
 
-
+    /**
+     * nếu không thể di chuyển thì sẽ nhận một giá trị random, sau đó nhận direction
+     */
     public void ranDomCurrentDirection(){
         AIChase ai  = new AIChase(Sandbox.getBomber(), this);
         if (step <= 0){

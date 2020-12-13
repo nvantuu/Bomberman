@@ -1,6 +1,5 @@
 package uet.oop.bomberman.entities.character.player;
 
-import com.sun.org.apache.bcel.internal.generic.IFLE;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -8,9 +7,7 @@ import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.character.Character;
 import uet.oop.bomberman.entities.character.enemies.Enemy;
-import uet.oop.bomberman.entities.other.Brick;
 import uet.oop.bomberman.entities.other.Grass;
-import uet.oop.bomberman.entities.other.Wall;
 import uet.oop.bomberman.entities.other.bomb.Bomb;
 import uet.oop.bomberman.entities.other.item.Item;
 import uet.oop.bomberman.gamecontroller.EventHandlersManager;
@@ -114,7 +111,7 @@ public class Bomber extends Character {
     // the rectangle around the bomber slightly smaller than the bomber
     @Override
     public Rectangle2D getBoundary() {
-        return new Rectangle2D(x, y, 32, 32);
+        return new Rectangle2D(x, y, 25, 32);
     }
 
     @Override
@@ -142,11 +139,6 @@ public class Bomber extends Character {
         }
         for (Bomb obj : Sandbox.getBomber().getBombs()){
             for (Flame obj1 : obj.getFlames()){
-                if (obj1.collide(this)){
-                    this.alive = false;
-                    killed();
-                    return false;
-                }
                 if (collide(obj1)){
                     this.alive = false;
                     killed();
@@ -206,18 +198,6 @@ public class Bomber extends Character {
     }
 
     private void animationsInSameDirection(Direction direction) {
-        if (!alive) {
-            img = Sprite.player_dead1.getFxImage();
-            if (countImage == 20) {
-                img = Sprite.player_dead2.getFxImage();
-            }
-            else if (countImage == 40) {
-                img = Sprite.player_dead3.getFxImage();
-            }
-            countImage ++;
-            return;
-        }
-
         switch (direction) {
             case UP:
                 if (countImage == 0) {
@@ -287,5 +267,15 @@ public class Bomber extends Character {
 
     public List<Bomb> getBombs() {
         return bombs;
+    }
+
+    public Entity getBombAt(int x, int y){
+        for (Entity obj : bombs){
+            if (obj.getX() == x && obj.getY() == y){
+                return obj;
+            }
+        }
+
+        return null;
     }
 }

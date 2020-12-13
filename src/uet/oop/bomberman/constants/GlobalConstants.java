@@ -1,9 +1,5 @@
 package uet.oop.bomberman.constants;
 
-/**
- * thêm BOMB_RADIUS, BOMB_RATE
- * addBombRate để cập nhật số bom đc đặt trên màn hình
- */
 public class GlobalConstants {
     public static int CELL_SIZE = 32; //Cells are square
     public static int CANVAS_WIDTH;
@@ -11,8 +7,8 @@ public class GlobalConstants {
     public static String GAME_NAME = "Bomberman";
     public static String GAME_VERSION = " --v1.0";
     public static int SPEED_BOMBER = 1;
-    public static int BOMB_RADIUS = 1;
-    public static int BOMB_RATE = 1;
+    public static int BOMB_RADIUS = 1; // độ dài của flame ban đầu là một
+    public static int BOMB_RATE = 1; // số bom được đặt ban đầu là một
 
     public static void addBombRate (int i){
         BOMB_RATE += i;
