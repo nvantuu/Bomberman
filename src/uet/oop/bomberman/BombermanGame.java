@@ -4,10 +4,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import uet.oop.bomberman.audio.MyAudioPlayer;
 import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.scene.Sandbox;
 
 public class BombermanGame extends Application {
+    public static MyAudioPlayer _musicPlayer;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -20,5 +22,8 @@ public class BombermanGame extends Application {
         Scene s = Sandbox.getScene();
         stage.setScene(s);
         stage.show();
+
+        _musicPlayer = new MyAudioPlayer(MyAudioPlayer.BACKGROUND_MUSIC);
+        _musicPlayer.loop();
     }
 }

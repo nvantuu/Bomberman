@@ -6,6 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import uet.oop.bomberman.GameLoop;
+import uet.oop.bomberman.audio.MyAudioPlayer;
 import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.character.enemies.Balloon;
@@ -28,7 +29,6 @@ import java.util.Scanner;
 
 
 public class Sandbox {
-
     static Canvas canvas;
     static Group root;
     static Scene scene;

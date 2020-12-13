@@ -3,6 +3,8 @@ package uet.oop.bomberman.entities.character.player;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.audio.MyAudioPlayer;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.character.Character;
@@ -41,6 +43,9 @@ public class Bomber extends Character {
         }
 
         timeBetweenPutBombs = 30;
+
+        MyAudioPlayer placeSound = new MyAudioPlayer(MyAudioPlayer.PLACE_BOMB);
+        placeSound.play();
     }
 
     @Override
@@ -79,6 +84,10 @@ public class Bomber extends Character {
     @Override
     public void killed() {
         this.alive = false;
+        MyAudioPlayer deadAudio = new MyAudioPlayer(MyAudioPlayer.DEAD);
+        deadAudio.play();
+
+        BombermanGame._musicPlayer.stop();
     }
 
     @Override
@@ -123,6 +132,8 @@ public class Bomber extends Character {
             if (e instanceof Grass) continue;
             if (e instanceof Item){
                 if (collide(e)) {
+                    MyAudioPlayer powerUpAudio = new MyAudioPlayer(MyAudioPlayer.POWER_UP);
+                    powerUpAudio.play();
                     ((Item) e).Active();
                     return true;
                 }
@@ -267,15 +278,5 @@ public class Bomber extends Character {
 
     public List<Bomb> getBombs() {
         return bombs;
-    }
-
-    public Entity getBombAt(int x, int y){
-        for (Entity obj : bombs){
-            if (obj.getX() == x && obj.getY() == y){
-                return obj;
-            }
-        }
-
-        return null;
     }
 }
