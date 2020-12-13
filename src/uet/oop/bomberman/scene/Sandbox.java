@@ -8,19 +8,32 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.GameLoop;
 import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.*;
+<<<<<<< HEAD
 import uet.oop.bomberman.entities.character.enemies.Balloon;
 import uet.oop.bomberman.entities.character.enemies.Oneal;
+=======
+<<<<<<< HEAD
+import uet.oop.bomberman.entities.character.enemies.Balloon;
+import uet.oop.bomberman.entities.character.enemies.Oneal;
+import uet.oop.bomberman.entities.other.Bomb;
+>>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
 import uet.oop.bomberman.entities.other.Brick;
 import uet.oop.bomberman.entities.other.Grass;
 import uet.oop.bomberman.entities.other.Wall;
 import uet.oop.bomberman.entities.character.player.Bomber;
+<<<<<<< HEAD
 import uet.oop.bomberman.entities.other.item.BombItem;
 import uet.oop.bomberman.entities.other.item.FlameItem;
 import uet.oop.bomberman.entities.other.item.Item;
+=======
+=======
+>>>>>>> 6d8b7c518b60032a061934f704099f1eae0a2b47
+>>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
 import uet.oop.bomberman.gamecontroller.EventHandler;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +70,11 @@ public class Sandbox {
         gc = canvas.getGraphicsContext2D();
         GameLoop.start(gc);
         try {
+<<<<<<< HEAD
             createMap(new File("C:\\Users\\hp\\IdeaProjects\\A_Project\\Bomberman\\res\\levels\\Level1.txt"));
+=======
+            createMap(new File("D:\\Game\\Bomberman\\res\\levels\\Level1.txt"));
+>>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
         } catch (IOException e) {
             System.err.println("Unable to load map file");
             System.exit(1);
@@ -90,10 +107,24 @@ public class Sandbox {
                         object = new Wall(j, i, Sprite.wall.getFxImage());
                         stillObjects.add(object);
                         break;
+<<<<<<< HEAD
 
                     case '*':  // Brick
                         object = new Grass(j, i, Sprite.grass.getFxImage());
                         stillObjects.add(object);
+=======
+<<<<<<< HEAD
+                    case '~':
+                        object = new Bomb(j, i, Sprite.bomb.getFxImage());
+                        stillObjects.add(object);
+                        break;
+                    case '*':  // Brick
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
+=======
+                    case '*':
+>>>>>>> 6d8b7c518b60032a061934f704099f1eae0a2b47
+>>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
                         object = new Brick(j, i, Sprite.brick.getFxImage());
                         stillObjects.add(object);
                         break;
@@ -145,13 +176,28 @@ public class Sandbox {
             }
         }
         sc.close();
+    }
 
+    public static char getCharInTxtMap(int j, int i) throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("D:\\Game\\Bomberman\\res\\levels\\Level1.txt"));
+        String s = sc.nextLine();
+        while (i-- > 0) {
+            s = sc.nextLine();
+        }
+        return s.charAt(j);
     }
 
     private static void setBomber(int x, int y) {
         bomber = new Bomber(x, y, Sprite.player_down.getFxImage());
+<<<<<<< HEAD
         bomber.setBomberSpeed(GlobalConstants.SPEED_BOMBER);
+=======
+<<<<<<< HEAD
+        bomber.setBomberSpeed(GlobalConstants.SPEED_BOMBER);
+=======
+>>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
         entities.add(bomber);
+>>>>>>> 6d8b7c518b60032a061934f704099f1eae0a2b47
     }
 
 

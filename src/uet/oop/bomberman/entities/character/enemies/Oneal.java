@@ -2,6 +2,9 @@ package uet.oop.bomberman.entities.character.enemies;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+<<<<<<< HEAD
+import uet.oop.bomberman.entities.Entity;
+=======
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.player.Bomber;
@@ -11,6 +14,7 @@ import uet.oop.bomberman.entities.other.bomb.Flame;
 import uet.oop.bomberman.entities.other.bomb.FlameSegment;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scene.Sandbox;
+>>>>>>> 6d8b7c518b60032a061934f704099f1eae0a2b47
 
 public class Oneal extends Enemy {
     public int maxStep = 16;
@@ -159,5 +163,25 @@ public class Oneal extends Enemy {
         if (r == 3) {
             currentDirection = Direction.RIGHT;
         }
+    }
+
+    @Override
+    public void move() {
+
+    }
+
+    @Override
+    public boolean canMove() {
+        return false;
+    }
+
+    @Override
+    public boolean collide(Entity e) {
+        return false;
+    }
+
+    @Override
+    public void killed() {
+
     }
 }

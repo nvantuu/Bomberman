@@ -1,8 +1,13 @@
 package uet.oop.bomberman.gamecontroller;
 
 import uet.oop.bomberman.constants.Direction;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.character.player.Bomber;
+import uet.oop.bomberman.entities.other.Bomb;
+import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scene.Sandbox;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class EventHandlersManager {
@@ -10,25 +15,35 @@ public class EventHandlersManager {
 
         ArrayList<String> keyBoardInputs = EventHandler.getInputEventList();
 
+        Bomber player = Sandbox.getBomber();
+
         if (keyBoardInputs.contains("UP") || keyBoardInputs.contains("W")) {
-            Sandbox.getBomber().move(Direction.UP);
+            player.move(Direction.UP);
             //Sandbox.getBomber().setCurrentDirection(Direction.UP);
         }
 
         if (keyBoardInputs.contains("DOWN") || keyBoardInputs.contains("S")) {
-            Sandbox.getBomber().move(Direction.DOWN);
+            player.move(Direction.DOWN);
         }
 
         if (keyBoardInputs.contains("LEFT") || keyBoardInputs.contains("A")) {
-            Sandbox.getBomber().move(Direction.LEFT);
+            player.move(Direction.LEFT);
         }
 
         if (keyBoardInputs.contains("RIGHT") || keyBoardInputs.contains("D")) {
-            Sandbox.getBomber().move(Direction.RIGHT);
+            player.move(Direction.RIGHT);
         }
 
         if (keyBoardInputs.contains("SPACE")) {
+<<<<<<< HEAD
             Sandbox.getBomber().setBomb();
+=======
+            if (player.canSetBomb()) {
+                player.setBombAndFlame();
+                player.decrementBombCount();
+            }
+
+>>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
         }
 
         if (!keyBoardInputs.contains("LEFT") &&
