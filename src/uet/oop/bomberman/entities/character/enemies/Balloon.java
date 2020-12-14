@@ -6,10 +6,6 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.player.Bomber;
-<<<<<<< HEAD
-=======
-import uet.oop.bomberman.entities.other.Flame;
->>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
 import uet.oop.bomberman.entities.other.Grass;
 import uet.oop.bomberman.entities.other.bomb.Bomb;
 import uet.oop.bomberman.entities.other.bomb.Flame;
@@ -20,15 +16,6 @@ import uet.oop.bomberman.scene.Sandbox;
 import java.util.Random;
 
 public class Balloon extends Enemy {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
-    public boolean alive = true;
-=======
->>>>>>> 6d8b7c518b60032a061934f704099f1eae0a2b47
-
->>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
     public Balloon(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         ranDomCurrentDirection();
@@ -125,10 +112,6 @@ public class Balloon extends Enemy {
             }
         }
         return true;
-    }
-
-    public boolean isAlive() {
-        return alive;
     }
 
     public Rectangle2D getBoundary() {
