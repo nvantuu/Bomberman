@@ -18,8 +18,12 @@ public class EventHandlersManager {
         Bomber player = Sandbox.getBomber();
 
         if (keyBoardInputs.contains("UP") || keyBoardInputs.contains("W")) {
+<<<<<<< HEAD
             player.move(Direction.UP);
             //Sandbox.getBomber().setCurrentDirection(Direction.UP);
+=======
+            Sandbox.getBomber().move(Direction.UP);
+>>>>>>> nguyenmanhtuan
         }
 
         if (keyBoardInputs.contains("DOWN") || keyBoardInputs.contains("S")) {

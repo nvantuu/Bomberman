@@ -8,7 +8,6 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.other.Brick;
 import uet.oop.bomberman.entities.other.Wall;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.entities.character.Character;
 import uet.oop.bomberman.scene.Sandbox;
 
 import java.util.ArrayList;
@@ -43,6 +42,9 @@ public class Flame extends Entity {
         createFlameSegmentsRight();
     }
 
+    /**
+     *  tạo ra flamesegment hướng lên trên
+     */
     public void createFlameSegmentsUp(){
         FlameSegment[] flameSegmentsUp = new FlameSegment[calculatePermittedDistance(0)];
 
@@ -61,6 +63,7 @@ public class Flame extends Entity {
             }
         }
 
+        // xét có va chạm với brick không
         if(flameSegmentsUp.length < GlobalConstants.BOMB_RADIUS || flameSegmentsUp.length == 0){
             for (Entity obj : Sandbox.getStillObjects()){
                 if (obj instanceof Brick && obj.getX() == _x && obj.getY() == _y - 1){
@@ -74,6 +77,9 @@ public class Flame extends Entity {
         }
     }
 
+    /**
+     *  tạo ra flamesegment hướng xuống dưới
+     */
     public void createFlameSegmentsDown(){
         FlameSegment[] flameSegmentsDown = new FlameSegment[calculatePermittedDistance(2)];
 
@@ -92,6 +98,7 @@ public class Flame extends Entity {
             }
         }
 
+        // xét có va chạm với brick không
         if(flameSegmentsDown.length < GlobalConstants.BOMB_RADIUS || flameSegmentsDown.length == 0){
             for (Entity obj : Sandbox.getStillObjects()){
                 if (obj instanceof Brick && obj.getX() == _x && obj.getY() == _y + 1){
@@ -105,6 +112,9 @@ public class Flame extends Entity {
         }
     }
 
+    /**
+     *  tạo ra flamessegment hướng sang trái
+     */
     public void createFlameSegmentsLeft(){
         FlameSegment[] flameSegmentsLeft = new FlameSegment[calculatePermittedDistance(3)];
 
@@ -123,6 +133,7 @@ public class Flame extends Entity {
             }
         }
 
+        // xét có va chạm với brick không
         if(flameSegmentsLeft.length < GlobalConstants.BOMB_RADIUS || flameSegmentsLeft.length == 0){
             for (Entity obj : Sandbox.getStillObjects()){
                 if (obj instanceof Brick && obj.getX() == _x - 1 && obj.getY() == _y){
@@ -136,6 +147,9 @@ public class Flame extends Entity {
         }
     }
 
+    /**
+     *  tạo ra flamessegment hướng sang phải
+     */
     public void createFlameSegmentsRight(){
         FlameSegment[] flameSegmentsRight = new FlameSegment[calculatePermittedDistance(1)];
 
@@ -154,6 +168,7 @@ public class Flame extends Entity {
             }
         }
 
+        // xét có va chạm với brick không
         if(flameSegmentsRight.length < GlobalConstants.BOMB_RADIUS || flameSegmentsRight.length == 0){
             for (Entity obj : Sandbox.getStillObjects()){
                 if (obj instanceof Brick && obj.getX() == _x + 1 && obj.getY() == _y){
@@ -167,6 +182,9 @@ public class Flame extends Entity {
         }
     }
 
+    /**
+     * tính toán độ dài của mỗi flamesegment
+     */
     public int calculatePermittedDistance(int direction){
         int radius = 0;
         int _x = this.getX();
@@ -218,6 +236,9 @@ public class Flame extends Entity {
         collideBomber();
     }
 
+    /**
+     * xét va chạm với player
+     */
     public void collideBomber(){
         if (this.getBoundary().intersects(Sandbox.getBomber().getBoundary())){
             Sandbox.getBomber().killed();
@@ -226,14 +247,6 @@ public class Flame extends Entity {
 
     @Override
     public boolean collide(Entity e) {
-        if (e instanceof Character){
-            boolean tf = this.getBoundary().intersects(e.getBoundary());
-            if (tf){
-                ((Character) e).killed();
-                return true;
-            }
-        }
-
         return false;
     }
 

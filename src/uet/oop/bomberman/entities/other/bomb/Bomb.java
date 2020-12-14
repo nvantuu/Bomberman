@@ -4,6 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import uet.oop.bomberman.audio.MyAudioPlayer;
 import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.player.Bomber;
@@ -35,6 +36,9 @@ public class Bomb extends Entity {
         }
         flames.add(new Flame(this.getX(), this.getY(), img));
         GlobalConstants.addBombRate(1);
+
+        MyAudioPlayer explodeAudio = new MyAudioPlayer(MyAudioPlayer.EXPLOSION);
+        explodeAudio.play();
     }
 
     @Override
@@ -82,8 +86,6 @@ public class Bomb extends Entity {
 
     @Override
     public void update() {
-
-
         if (timeToExplode > 1){
             timeToExplode--;
         }
@@ -98,13 +100,16 @@ public class Bomb extends Entity {
         animationBomb();
     }
 
+    /**
+     * xét va chạm với player khi vừa mới đặt bom
+     */
     @Override
     public boolean collide(Entity e) {
         if (e instanceof Bomber){
             int diffX = e.getXCanvas() - this.getXCanvas();
             int diffY = e.getYCanvas() - this.getYCanvas();
 
-            if (!((Math.abs(diffX)) < 32 && Math.abs(diffY) < 32)){
+            if (!(diffX < 32 && diffX > -26 && Math.abs(diffY) < 32)){
                 through = false;
             }
         }

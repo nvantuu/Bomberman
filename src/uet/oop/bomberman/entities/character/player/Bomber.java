@@ -1,21 +1,24 @@
 package uet.oop.bomberman.entities.character.player;
 
-import com.sun.org.apache.bcel.internal.generic.IFLE;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.audio.MyAudioPlayer;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.character.Character;
 import uet.oop.bomberman.entities.character.enemies.Enemy;
+<<<<<<< HEAD
 <<<<<<< HEAD
 import uet.oop.bomberman.entities.other.Brick;
 =======
 import uet.oop.bomberman.entities.other.Bomb;
 import uet.oop.bomberman.entities.other.Flame;
 >>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
+=======
+>>>>>>> nguyenmanhtuan
 import uet.oop.bomberman.entities.other.Grass;
-import uet.oop.bomberman.entities.other.Wall;
 import uet.oop.bomberman.entities.other.bomb.Bomb;
 import uet.oop.bomberman.entities.other.item.Item;
 import uet.oop.bomberman.gamecontroller.EventHandlersManager;
@@ -32,7 +35,6 @@ import java.util.List;
 public class Bomber extends Character {
     private int countImage = 0;
     public int timeBetweenPutBombs = 0;
-    public boolean alive = true;
     public List<Bomb> bombs = new ArrayList<>();
 =======
 import java.io.File;
@@ -109,6 +111,9 @@ public class Bomber extends Character {
         }
 
         timeBetweenPutBombs = 30;
+
+        MyAudioPlayer placeSound = new MyAudioPlayer(MyAudioPlayer.PLACE_BOMB);
+        placeSound.play();
     }
 
     @Override
@@ -116,8 +121,8 @@ public class Bomber extends Character {
 <<<<<<< HEAD
         if (!this.alive){
             afterKill();
-            if (countImageAfterKill <= 0) {
-                System.exit(1);
+            if (this.countImageAfterKill <= 0) {
+                System.exit(0);
             }
         }
         else {
@@ -175,6 +180,7 @@ public class Bomber extends Character {
     @Override
     public void killed() {
         this.alive = false;
+<<<<<<< HEAD
 =======
         for (Bomb b : bombList) {
             b.render(gc);
@@ -192,6 +198,12 @@ public class Bomber extends Character {
         countImage = 0;
         alive = false;
 >>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
+=======
+        MyAudioPlayer deadAudio = new MyAudioPlayer(MyAudioPlayer.DEAD);
+        deadAudio.play();
+
+        BombermanGame._musicPlayer.stop();
+>>>>>>> nguyenmanhtuan
     }
 
     @Override
@@ -227,10 +239,14 @@ public class Bomber extends Character {
     @Override
     public Rectangle2D getBoundary() {
 <<<<<<< HEAD
+<<<<<<< HEAD
         return new Rectangle2D(x, y, 32, 32);
 =======
         return new Rectangle2D(x + 2, y + 3, 21, 27);
 >>>>>>> 2ed22847d1aa2dad65c484c8374ce25198219cc8
+=======
+        return new Rectangle2D(x, y, 25, 32);
+>>>>>>> nguyenmanhtuan
     }
 
     @Override
@@ -238,10 +254,13 @@ public class Bomber extends Character {
         if (!this.alive){
             return false;
         }
+        // xét va chạm với item và các vật thể
         for (Entity e : Sandbox.getStillObjects()) {
             if (e instanceof Grass) continue;
             if (e instanceof Item){
                 if (collide(e)) {
+                    MyAudioPlayer powerUpAudio = new MyAudioPlayer(MyAudioPlayer.POWER_UP);
+                    powerUpAudio.play();
                     ((Item) e).Active();
                     return true;
                 }
@@ -250,6 +269,7 @@ public class Bomber extends Character {
                 return false;
             }
         }
+        // xét va chạm với enemy
         for (Entity e : Sandbox.getEntities()) {
             if (e instanceof Bomber) continue;
             if (collide(e)) {
@@ -257,13 +277,12 @@ public class Bomber extends Character {
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        // xét va chạm với flame, flamesegments
+>>>>>>> nguyenmanhtuan
         for (Bomb obj : Sandbox.getBomber().getBombs()){
             for (Flame obj1 : obj.getFlames()){
-                if (obj1.collide(this)){
-                    this.alive = false;
-                    killed();
-                    return false;
-                }
                 if (collide(obj1)){
                     this.alive = false;
                     killed();
@@ -279,6 +298,7 @@ public class Bomber extends Character {
                 }
             }
         }
+        // xét va chạm với bom
         for (Bomb e : Sandbox.getBomber().getBombs()){
             if (e.collide(this)) {
                 return true;
@@ -324,22 +344,13 @@ public class Bomber extends Character {
         else if (this.countImageAfterKill == 20){
             img = Sprite.player_dead3.getFxImage();
         }
-        countImageAfterKill--;
+        --this.countImageAfterKill;
     }
 
     private void animationsInSameDirection(Direction direction) {
-        if (!alive) {
-            img = Sprite.player_dead1.getFxImage();
-            if (countImage == 20) {
-                img = Sprite.player_dead2.getFxImage();
-            }
-            else if (countImage == 40) {
-                img = Sprite.player_dead3.getFxImage();
-            }
-            countImage ++;
+        if (!this.alive){
             return;
         }
-
         switch (direction) {
             case UP:
                 if (countImage == 0) {

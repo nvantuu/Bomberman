@@ -13,7 +13,7 @@ import uet.oop.bomberman.scene.Sandbox;
 public class FlameSegment extends Entity {
     public int countFlameSegment = 0;
     public int _direction;
-    public boolean _last;
+    public boolean _last; // có phải là phần tử flame cuối cùng không
     public FlameSegment(int xUnit, int yUnit, Image img, int direction, boolean last) {
         super(xUnit, yUnit, img);
         _direction = direction;
@@ -137,6 +137,9 @@ public class FlameSegment extends Entity {
         collideBomber();
     }
 
+    /**
+     * xét va chạm với player
+     */
     public void collideBomber(){
         if (this.getBoundary().intersects(Sandbox.getBomber().getBoundary())){
             Sandbox.getBomber().killed();
@@ -145,14 +148,6 @@ public class FlameSegment extends Entity {
 
     @Override
     public boolean collide(Entity e) {
-        if (e instanceof Character){
-            boolean tf = this.getBoundary().intersects(e.getBoundary());
-            if (tf) {
-                ((Character) e).killed();
-                return true;
-            }
-        }
-
         return false;
     }
 }

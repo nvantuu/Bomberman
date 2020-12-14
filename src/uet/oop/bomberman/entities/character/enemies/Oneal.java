@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Entity;
 =======
 import uet.oop.bomberman.constants.Direction;
+import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.player.Bomber;
 import uet.oop.bomberman.entities.other.Grass;
@@ -23,6 +24,7 @@ public class Oneal extends Enemy {
 
     public Oneal(int x, int y, Image img) {
         super(x, y, img);
+        speed = GlobalConstants.SPEED_ONEAL;
     }
 
     @Override
@@ -42,6 +44,8 @@ public class Oneal extends Enemy {
         return new Rectangle2D(x, y, 32, 32);
     }
 
+
+
     public void update() {
         if (!this.alive){
             afterKill();
@@ -49,13 +53,16 @@ public class Oneal extends Enemy {
         move();
     }
 
+    /**
+     *  cứ đi chuyển được 1 ô hoặc không đi được thì random
+     */
     @Override
     public void move() {
         ranDomCurrentDirection();
         if (currentDirection == Direction.UP){
             if (canMove()){
                 step--;
-                move(0, -2);
+                move(0, -speed);
             }
             else {
                 step = 0;
@@ -65,7 +72,7 @@ public class Oneal extends Enemy {
         if (currentDirection == Direction.DOWN){
             if (canMove()){
                 step--;
-                move(0, 2);
+                move(0, speed);
             }
             else {
                 step = 0;
@@ -75,7 +82,7 @@ public class Oneal extends Enemy {
         if (currentDirection == Direction.LEFT){
             if (canMove()){
                 step--;
-                move(-2, 0);
+                move(-speed, 0);
             }
             else {
                 step = 0;
@@ -85,7 +92,7 @@ public class Oneal extends Enemy {
         if (currentDirection == Direction.RIGHT){
             if (canMove()){
                 step--;
-                move(2, 0);
+                move(speed, 0);
             }
             else {
                 step = 0;
@@ -98,19 +105,23 @@ public class Oneal extends Enemy {
         if (!this.alive){
             return false;
         }
+
+        // xét va chạm với vật thể không chuyển động
         for (Entity e : Sandbox.getStillObjects()) {
             if (e instanceof Grass) continue;
             if (collide(e)) {
-                ranDomCurrentDirection();
                 return false;
             }
         }
+
+        // xét va chạm với bom
         for (Bomb e : Sandbox.getBomber().getBombs()){
             if (collide(e)){
-                ranDomCurrentDirection();
                 return false;
             }
         }
+
+        // xét va chạm với flame
         for (Bomb obj : Sandbox.getBomber().getBombs()){
             for (Flame obj1 : obj.getFlames()){
                 for (FlameSegment e : obj1.getFlameSegments()){
@@ -121,6 +132,8 @@ public class Oneal extends Enemy {
                 }
             }
         }
+
+        // xét va chạm với player
         for (Entity e : Sandbox.getEntities()){
             if (e instanceof Bomber){
                 if (collide(e)){
@@ -144,7 +157,9 @@ public class Oneal extends Enemy {
         img = Sprite.oneal_dead.getFxImage();
     }
 
-
+    /**
+     * nếu không thể di chuyển thì sẽ nhận một giá trị random, sau đó nhận direction
+     */
     public void ranDomCurrentDirection(){
         AIChase ai  = new AIChase(Sandbox.getBomber(), this);
         if (step <= 0){

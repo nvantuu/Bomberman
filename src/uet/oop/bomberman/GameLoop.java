@@ -80,14 +80,11 @@ public class GameLoop {
                 Sandbox.getStillObjects().get(i).update();
             }
         }
+        // xóa nhân vật
         for (int i = 0; i < Sandbox.getEntities().size(); i++) {
-            //xóa nhân vật
-            if (!((Character) Sandbox.getEntities().get(i)).isAlive()) {
-                if (((Character) Sandbox.getEntities().get(i)).getCountImageAfterKill() > 0) {
-                    ((Character) Sandbox.getEntities().get(i)).afterKill();
-                } else {
-                    Sandbox.getEntities().remove(i);
-                }
+            if (!((Character) Sandbox.getEntities().get(i)).isAlive() &&
+                    ((Character) Sandbox.getEntities().get(i)).getCountImageAfterKill() <= 0) {
+                Sandbox.getEntities().remove(i);
             } else {
                 Sandbox.getEntities().get(i).update();
             }
