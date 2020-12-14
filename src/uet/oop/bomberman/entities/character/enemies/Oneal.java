@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.character.enemies;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.constants.Direction;
+import uet.oop.bomberman.constants.GlobalConstants;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.player.Bomber;
 import uet.oop.bomberman.entities.other.Grass;
@@ -19,6 +20,7 @@ public class Oneal extends Enemy {
 
     public Oneal(int x, int y, Image img) {
         super(x, y, img);
+        speed = GlobalConstants.SPEED_ONEAL;
     }
 
     @Override
@@ -38,6 +40,8 @@ public class Oneal extends Enemy {
         return new Rectangle2D(x, y, 32, 32);
     }
 
+
+
     public void update() {
         if (!this.alive){
             afterKill();
@@ -54,7 +58,7 @@ public class Oneal extends Enemy {
         if (currentDirection == Direction.UP){
             if (canMove()){
                 step--;
-                move(0, -2);
+                move(0, -speed);
             }
             else {
                 step = 0;
@@ -64,7 +68,7 @@ public class Oneal extends Enemy {
         if (currentDirection == Direction.DOWN){
             if (canMove()){
                 step--;
-                move(0, 2);
+                move(0, speed);
             }
             else {
                 step = 0;
@@ -74,7 +78,7 @@ public class Oneal extends Enemy {
         if (currentDirection == Direction.LEFT){
             if (canMove()){
                 step--;
-                move(-2, 0);
+                move(-speed, 0);
             }
             else {
                 step = 0;
@@ -84,7 +88,7 @@ public class Oneal extends Enemy {
         if (currentDirection == Direction.RIGHT){
             if (canMove()){
                 step--;
-                move(2, 0);
+                move(speed, 0);
             }
             else {
                 step = 0;

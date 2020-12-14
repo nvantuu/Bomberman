@@ -9,6 +9,7 @@ public class GlobalConstants {
     public static int SPEED_BOMBER = 1;
     public static int BOMB_RADIUS = 1; // độ dài của flame ban đầu là một
     public static int BOMB_RATE = 1; // số bom được đặt ban đầu là một
+    public static int SPEED_ONEAL = 2;
 
     public static void addBombRate (int i){
         BOMB_RATE += i;

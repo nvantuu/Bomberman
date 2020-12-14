@@ -25,7 +25,6 @@ import java.util.List;
 public class Bomber extends Character {
     private int countImage = 0;
     public int timeBetweenPutBombs = 0;
-    public boolean alive = true;
     public List<Bomb> bombs = new ArrayList<>();
 
     public void setBomberSpeed(int speed) {
@@ -52,8 +51,8 @@ public class Bomber extends Character {
     public void update() {
         if (!this.alive){
             afterKill();
-            if (countImageAfterKill <= 0) {
-                System.exit(1);
+            if (this.countImageAfterKill <= 0) {
+                System.exit(0);
             }
         }
         else {
@@ -128,6 +127,7 @@ public class Bomber extends Character {
         if (!this.alive){
             return false;
         }
+        // xét va chạm với item và các vật thể
         for (Entity e : Sandbox.getStillObjects()) {
             if (e instanceof Grass) continue;
             if (e instanceof Item){
@@ -142,12 +142,14 @@ public class Bomber extends Character {
                 return false;
             }
         }
+        // xét va chạm với enemy
         for (Entity e : Sandbox.getEntities()) {
             if (e instanceof Bomber) continue;
             if (collide(e)) {
                 return false;
             }
         }
+        // xét va chạm với flame, flamesegments
         for (Bomb obj : Sandbox.getBomber().getBombs()){
             for (Flame obj1 : obj.getFlames()){
                 if (collide(obj1)){
@@ -165,6 +167,7 @@ public class Bomber extends Character {
                 }
             }
         }
+        // xét va chạm với bom
         for (Bomb e : Sandbox.getBomber().getBombs()){
             if (e.collide(this)) {
                 return true;
@@ -205,10 +208,13 @@ public class Bomber extends Character {
         else if (this.countImageAfterKill == 20){
             img = Sprite.player_dead3.getFxImage();
         }
-        countImageAfterKill--;
+        --this.countImageAfterKill;
     }
 
     private void animationsInSameDirection(Direction direction) {
+        if (!this.alive){
+            return;
+        }
         switch (direction) {
             case UP:
                 if (countImage == 0) {

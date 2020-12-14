@@ -7,7 +7,7 @@ import java.util.Random;
 public class AIChase {
     Bomber _bomber;
     Enemy _e;
-    private final int distanceToChase = 4;
+    private final int distanceToChase = 5;
 
     public AIChase(Bomber bomber, Enemy e){
         _bomber = bomber;
